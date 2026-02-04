@@ -14,9 +14,9 @@ from datetime import datetime
 
 class Process_Data:
 
-    def __init__(self, input_file, output_file):
+    def __init__(self, input_file, file_path):
         self.input_file_name = input_file
-        self.output_file_name = output_file
+        self.file_path = file_path
         self.time_stamp = datetime.now().strftime('%d_%m_%Y_%H_%M_%S')
         self.reference_value = ["P_MCP_PCH_TOTAL"] # value to take as a reference
         self.power_rails = ["P_MCP_PCH_TOTAL",'P_PCH_TOTAL','P_MCP_TOTAL']
@@ -95,7 +95,7 @@ class Process_Data:
         print('File created: c:\\Borrar\\Results_Interested_Rails_{}_{}.csv'.format(self.input_file_name, self.time_stamp))
 
         newdf = self.main_df.loc[self.power_rails]
-        newdf = newdf[column_names]
+        newdf = newdf[self.column_names]
         ##newdf.loc['Test'] = test_names
         newdf.to_csv(r'c:\\Borrar\\Results_Power_Rails_{}_{}.csv'.format(self.input_file_name, self.time_stamp))
         print('File created: c:\\Borrar\\Results_Power_Rails_{}_{}.csv'.format(self.input_file_name, self.time_stamp))
@@ -108,5 +108,7 @@ class Process_Data:
         self.create_result_files()
 
 ############################################################################################################################################
-data = Process_Data('Summary', 'Summary_output')
-data.main()
+if __name__ == '__main__':
+    #main()
+    data = Process_Data('Summary', 'Summary_output')
+    data.main()
