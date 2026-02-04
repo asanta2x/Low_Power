@@ -14,21 +14,20 @@ from datetime import datetime
 
 class Process_Data:
 
-    def __init__(self, input_file, file_path):
+    def __init__(self, file_path, input_file):
         self.input_file_name = input_file
         self.file_path = file_path
-        self.time_stamp = datetime.now().strftime('%d_%m_%Y_%H_%M_%S')
+        self.time_stamp = ''#datetime.now().strftime('%d_%m_%Y_%H_%M_%S')
         self.reference_value = ["P_MCP_PCH_TOTAL"] # value to take as a reference
         self.power_rails = ["P_MCP_PCH_TOTAL",'P_PCH_TOTAL','P_MCP_TOTAL']
-        self.interested_rails = ['P_VCCORE','P_VCCGT','P_VCCSA','P_VNNAON','P_VCCIO','P_VCC1P8','P_VDD2','P_V3P3A_PCH',
-                            'P_VCCPDSW_3P3','P_V1P8A_PCH','P_V1P25','P_V0P85A','P_MCP_TOTAL','P_PCH_POWER','P_MCP_PCH_TOTAL']
+        self.interested_rails = ['P_VCCGT','P_VCCSA','P_VNNAON','P_VCCIO','P_VCC1P8','P_VDD2','P_V3P3A_PCH',
+                            'P_VCCPDSW_3P3','P_V1P8A_PCH','P_V1P25','P_V0P85A','P_VCCCORE','P_MCP_TOTAL','P_PCH_TOTAL','P_MCP_PCH_TOTAL']
 
         self.test_names = ['CMS-Mode-Short-Idle', 'CMS-Mode-MCS-State', 'CMS-Mode-S5-State', 'CMS-Mode-DeepSx-State', 'S3-Mode-Short-Idle','S3-Mode-Long-Idle','S3-State','S3-Mode-S5-State','S3-Mode-DeepSx-State']
-        self.path = 'C:\Borrar'
 
     def read_csv(self, file):
         print(file)
-        df = pd.read_excel(r'{}\{}.xlsx'.format(self.path,file))
+        df = pd.read_excel(r'{}\{}.xlsx'.format(self.file_path,file))
         return df
 
     def process_test_names(self, test_names):
@@ -62,15 +61,19 @@ class Process_Data:
                 temp_list = []
                 vals = []
                 for i in range(iteration_numbers):
-                    temp_list.append([self.dic_test[test][i][-1], float(self.df_filtered[self.dic_test[test][i][0]].values)])
-                    vals.append(float(self.df_filtered[self.dic_test[test][i][0]].values))
+##                    print(self.dic_test[test][i][-1])
+##                    print(self.df_filtered[self.dic_test[test][i][0]].values)
+                    temp_list.append([self.dic_test[test][i][-1], self.df_filtered[self.dic_test[test][i][0]].values])
+                    vals.append(self.df_filtered[self.dic_test[test][i][0]].values)
 
                 vals.sort()
                 index_midle_value = len(vals)//2
                 midle_value = vals[index_midle_value]
 
                 for i in range(iteration_numbers):
-                    if midle_value == float(self.df_filtered[self.dic_test[test][i][0]].values):
+                    print(midle_value)
+                    print(self.df_filtered[self.dic_test[test][i][0]].values)
+                    if midle_value == self.df_filtered[self.dic_test[test][i][0]].values:
                         column_name_midle_value = self.df_filtered[self.dic_test[test][i][0]].name
                         self.column_names.append(column_name_midle_value)
                         break
@@ -85,18 +88,15 @@ class Process_Data:
         df_row_filtered = self.main_df.loc[self.interested_rails]
         df_Copy = df_row_filtered.copy()
         df_result = df_Copy[self.column_names]
-        ##df_result.loc['Test'] = test_names
-        df_result.to_csv(r'c:\\Borrar\\Results_Interested_Rails_{}_{}.csv'.format(self.input_file_name, self.time_stamp))
-        print('File created: c:\\Borrar\\Results_Interested_Rails_{}_{}.csv'.format(self.input_file_name, self.time_stamp))
+        df_result.to_csv(r'{}\\Results_Interested_Rails_{}_{}.csv'.format(self.file_path,self.input_file_name, self.time_stamp))
+        print('File created: {}\\Results_Interested_Rails_{}_{}.csv'.format(self.file_path,self.input_file_name, self.time_stamp))
 
         newdf = self.main_df.loc[self.power_rails]
         newdf = newdf[self.column_names]
-        ##newdf.loc['Test'] = test_names
-        newdf.to_csv(r'c:\\Borrar\\Results_Power_Rails_{}_{}.csv'.format(self.input_file_name, self.time_stamp))
-        print('File created: c:\\Borrar\\Results_Power_Rails_{}_{}.csv'.format(self.input_file_name, self.time_stamp))
+        newdf.to_csv(r'{}\\Results_Power_Rails_{}_{}.csv'.format(self.file_path,self.input_file_name, self.time_stamp))
+        print('File created: {}\\Results_Power_Rails_{}_{}.csv'.format(self.file_path,self.input_file_name, self.time_stamp))
 
     def main(self):
-        print('Main method')
         self.main_df = self.read_csv(self.input_file_name)
         self.process_test_names(self.test_names)
         self.process_dic_test(self.dic_test)
@@ -105,5 +105,5 @@ class Process_Data:
 ############################################################################################################################################
 if __name__ == '__main__':
     #main()
-    data = Process_Data('Summary', 'c:\_hopper_results')
+    data = Process_Data('c:\\_hopper_results\\20260203T193430_CMS-Mode-MCS-State\\', 'Summary_03_02_2026_21_31_12')
     data.main()
