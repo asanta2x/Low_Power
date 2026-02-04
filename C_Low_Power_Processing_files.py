@@ -23,10 +23,6 @@ class Process_Data:
         self.interested_rails = ['P_VCCORE','P_VCCGT','P_VCCSA','P_VNNAON','P_VCCIO','P_VCC1P8','P_VDD2','P_V3P3A_PCH',
                             'P_VCCPDSW_3P3','P_V1P8A_PCH','P_V1P25','P_V0P85A','P_MCP_TOTAL','P_PCH_POWER','P_MCP_PCH_TOTAL']
 
-##        self.interested_rails = ['P_VCCCORE','P_VCCGT','P_VCCSA','P_VCCPRIM_VNNAON','P_VCCPRIM_IO','P_VCCPRIM_1P8','P_VDD2H_CPU','P_MCP_TOTAL','P_VCCPRIM_3P3',
-##                            'P_VCCPDSW_3P3','P_V1P8A_PCH','P_VCCPRIM_1P25','P_V0P85A','P_PCH_TOTAL','P_MCP_PCH_TOTAL']
-##        self.interested_rails = ['MCP_P_VCCORE','MCP_P_VCCGT','MCP_P_VCCSA','MCP_P_VNNAON','MCP_P_VCCIO','MCP_P_VCC1P8','MCP_P_VDD2','PCH_P_V3P3A_PCH',
-##                    'PCH_P_VCCPDSW_3P3','PCH_P_V1P8A_PCH','PCH_P_V1P25','PCH_P_V0P85A','P_MCP_POWER','P_PCH_POWER','P_MCP_PCH_TOTAL','V_PM_SLP_S0_N','V_PM_SLP_S3_N','V_PM_SLP_S4_N','V_PM_SLP_S5_N','V_CPU_C10_GATE_N']
         self.test_names = ['CMS-Mode-Short-Idle', 'CMS-Mode-MCS-State', 'CMS-Mode-S5-State', 'CMS-Mode-DeepSx-State', 'S3-Mode-Short-Idle','S3-Mode-Long-Idle','S3-State','S3-Mode-S5-State','S3-Mode-DeepSx-State']
         self.path = 'C:\Borrar'
 
@@ -56,14 +52,13 @@ class Process_Data:
         self.column_names = []
         for test in self.dic_test:
             golden_index = 0
-            best_iteration = 0
             if self.dic_test[test] == []: continue
             iteration_numbers = len(self.dic_test[test])
-            if iteration_numbers == 1: golden_index = 0 # agregar regrese el valor directo del DF
-        ##    elif iteration_numbers == 2: print(f'Test: {test} is not possible to have a medium value, 2 iterations detected')
+            if iteration_numbers == 1:
+                self.column_names.append(self.df_filtered[self.dic_test[test][0][0]].name)
+
             else:
                 if iteration_numbers%2==0: print(f'Be careful: 2 posible values as median on {test}, total iterations: {iteration_numbers} total iterations')
-                temp_dic = {}
                 temp_list = []
                 vals = []
                 for i in range(iteration_numbers):
@@ -84,8 +79,8 @@ class Process_Data:
     def create_result_files(self):
         self.main_df.set_index('Unnamed: 0', inplace=True)
         df_full_rails = self.main_df[self.column_names]
-        df_full_rails.to_csv(r'c:\\Borrar\\Results_Full_Rails_{}_{}.csv'.format(self.input_file_name, self.time_stamp))
-        print('File created: c:\\Borrar\\Results_Full_Rails_{}_{}.csv'.format(self.input_file_name, self.time_stamp))
+        df_full_rails.to_csv(r'{}\\Results_Full_Rails_{}_{}.csv'.format(self.file_path,self.input_file_name, self.time_stamp))
+        print('File created: {}\\Results_Full_Rails_{}_{}.csv'.format(self.file_path, self.input_file_name, self.time_stamp))
 
         df_row_filtered = self.main_df.loc[self.interested_rails]
         df_Copy = df_row_filtered.copy()
@@ -110,5 +105,5 @@ class Process_Data:
 ############################################################################################################################################
 if __name__ == '__main__':
     #main()
-    data = Process_Data('Summary', 'Summary_output')
+    data = Process_Data('Summary', 'c:\_hopper_results')
     data.main()
