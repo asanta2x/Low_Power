@@ -27,7 +27,7 @@ class Process_Data:
 
     def read_csv(self, file):
         print(file)
-        df = pd.read_excel(r'{}\{}.xlsx'.format(self.file_path,file))
+        df = pd.read_excel(r'{}{}'.format(self.file_path,file))
         return df
 
     def process_test_names(self, test_names):
@@ -105,5 +105,5 @@ class Process_Data:
 ############################################################################################################################################
 if __name__ == '__main__':
     #main()
-    data = Process_Data('c:\\_hopper_results\\20260203T193430_CMS-Mode-MCS-State\\', 'Summary_03_02_2026_21_31_12')
+    data = Process_Data('c:\\_hopper_results\\20260203T193430_CMS-Mode-MCS-State\\', 'Summary_03_02_2026_21_31_12.xlsx')
     data.main()
