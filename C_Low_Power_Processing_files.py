@@ -26,7 +26,7 @@ class Process_Data:
         self.test_names = ['CMS-Mode-Short-Idle', 'CMS-Mode-MCS-State', 'CMS-Mode-S5-State', 'CMS-Mode-DeepSx-State', 'S3-Mode-Short-Idle','S3-Mode-Long-Idle','S3-State','S3-Mode-S5-State','S3-Mode-DeepSx-State']
 
     def read_csv(self, file):
-        print(file)
+##        print(file)
         df = pd.read_excel(r'{}{}'.format(self.file_path,file))
         return df
 
@@ -71,8 +71,8 @@ class Process_Data:
                 midle_value = vals[index_midle_value]
 
                 for i in range(iteration_numbers):
-                    print(midle_value)
-                    print(self.df_filtered[self.dic_test[test][i][0]].values)
+##                    print(midle_value)
+##                    print(self.df_filtered[self.dic_test[test][i][0]].values)
                     if midle_value == self.df_filtered[self.dic_test[test][i][0]].values:
                         column_name_midle_value = self.df_filtered[self.dic_test[test][i][0]].name
                         self.column_names.append(column_name_midle_value)
