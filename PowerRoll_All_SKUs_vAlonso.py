@@ -5,11 +5,12 @@ import argparse
 import json
 import re
 import warnings
+from datetime import datetime
 
 class PowerRoll:
     def __init__(self, rootdir):
         self.rootdir = rootdir
-
+        self.time_stamp = datetime.now().strftime('%d_%m_%Y_%H_%M_%S')
 
     def main(self):
         msg         = "Script description"
@@ -257,67 +258,58 @@ class PowerRoll:
                  "V_VCCSA_SENSE"]
 
 
-        nvl_s = ["P_MCP_PCH_TOTAL",
-                 "P_MCP_POWER",
-                 "MCP_P_VCCORE",
-                 "MCP_P_VCCGT",
-                 "MCP_P_VCCSA",
-                 "MCP_P_VNNAON",
-                 "MCP_P_VCCIO",
-                 "MCP_P_VCC1P8",
-                 "MCP_P_VDD2",
-                 "P_PCH_POWER",
-                 "PCH_P_V3P3A_PCH",
-                 "PCH_P_V1P8A_PCH",
-                 "PCH_P_V1P25",
-                 "PCH_P_V0P85A",
-                 "PCH_P_VCCPDSW_3P3",
-                 "PCH_P_VCCPRTC_3P3",
-                 "PCH_P_VCCPGPPEFHK_3P3_1P8",
-                 "PCH_P_VCCPGPPBC_3P3_1P8",
-                 "PCH_P_VCCDUSB_3P3",
-                 "PCH_P_VCCA_MPHYPLL_1P8",
-                 "PCH_P_VCCA_REF_PLL_1P8",
-                 "PCH_P_VCCA_XTAL_1P8",
-                 "PCH_P_VCCPRIM_1P8",
-                 "PCH_P_VCCPFUSE_1P8",
-                 "PCH_P_VCCPUSB_1P8",
-                 "PCH_P_VCCPSPI_3P3_1P8",
-                 "PCH_P_VCCPGPPI_3P3_1P8",
-                 "PCH_P_VCCPGPPDR_3P3_1P8",
-                 "PCH_P_VCCPGPPA_1P8",
-                 "PCH_P_VCCPRIM_1P25",
-                 "PCH_P_VCCA_PLL_1P25",
-                 "PCH_P_VCCPRIM_1P05_1P25",
-                 "PCH_P_VCCPRIMCORE_0P85",
-                 "PCH_P_VCCMPHY_0P85",
-                 "PCH_P_VCCA_XTAL_0P85",
-                 "V_VCCCORE_SENSE",
-                 "V_VCCGT_SENSE",
-                 "V_VCCSA_SENSE",
-                 "V_PM_SLP_S0_N",
-                 "V_PM_SLP_S3_N",
-                 "V_PM_SLP_S4_N",
-                 "V_PM_SLP_S5_N",
-                 "V_CPU_C10_GATE_N",
-                 "V_VCC_PCORE0_23_DLVR_OUT",
-                 "V_VCC_PCORE0_01_DLVR_OUT",
-                 "V_VCC_PCORE0_67_DLVR_OUT",
-                 "V_VCC_PCORE0_45_DLVR_OUT",
-                 "V_VCC_PCORE1_67_DLVR_OUT",
-                 "V_VCC_PCORE1_45_DLVR_OUT",
-                 "V_VCC_PCORE1_23_DLVR_OUT",
-                 "V_VCC_PCORE1_01_DLVR_OUT",
-                 "V_VCC_ECORE0_3_DLVR_OUT",
-                 "V_VCC_ECORE0_2_DLVR_OUT",
-                 "V_VCC_ECORE0_1_DLVR_OUT",
-                 "V_VCC_ECORE0_0_DLVR_OUT",
-                 "V_VCC_ECORE1_3_DLVR_OUT",
-                 "V_VCC_ECORE1_2_DLVR_OUT",
-                 "V_VCC_ECORE1_1_DLVR_OUT",
-                 "V_VCC_ECORE1_0_DLVR_OUT",
-                 "V_VCC_CCF_1_DLVR_OUT",
-                 "V_VCC_CCF_0_DLVR_OUT"]
+        nvl_s = ['P_VCCGT',
+                'P_VCC1P8',
+                'P_VDD2',
+                'P_VCCIO',
+                'P_VNNAON',
+                'P_VCCCORE_PH1',
+                'P_VCCCORE_PH2',
+                'P_VCCCORE_PH3',
+                'P_VCCCORE_PH4',
+                'P_VCCCORE_PH5',
+                'P_VCCCORE_PH6',
+                'P_VCCCORE_PH7',
+                'P_VCCCORE_PH8',
+                'P_VCCCORE_PH9',
+                'P_VCCSA_PH1',
+                'P_VCCSA_PH2',
+                'P_V5DUAL_DDR5',
+                'P_V3P3A_PCH',
+                'P_VCCPDSW_3P3',
+                'P_VCCDUSB_3P3',
+                'P_VCCPRTC_3P3',
+                'P_V1P25',
+                'P_VCCA_PLL_1P25',
+                'P_VCCPRIM_1P05_1P25',
+                'P_V1P8A_PCH',
+                'P_VCCPRIM_1P8',
+                'P_VCCPUSB_1P8',
+                'P_VCCPFUSE_1P8',
+                'P_VCCA_MPHYPLL_1P8',
+                'P_VCCA_REF_PLL_1P8',
+                'P_VCCA_XTAL_1P8',
+                'P_VCCA_CNVI_PLL_1P8',
+                'P_V0P85A',
+                'P_V3P3S_PEG_SLOT_1',
+                'P_VCCA_XTAL_0P85',
+                'P_VCCPRIM_1P25',
+                'P_V3P3S_PCIE_SLOT2',
+                'P_V3P3S_PCIE_SLOT3',
+                'P_V3P3A_PCIEAUX',
+                'P_VCCPSPI_3P3_1P8',
+                'P_VCCPGPPA_1P8',
+                'P_VCCPGPPBC_3P3_1P8',
+                'P_VCCPGPPDR_3P3_1P8',
+                'P_VCCPGPPEFHK_3P3_1P8',
+                'P_VCCPGPPI_3P3_1P8',
+                'P_VCCMPHY_0P85',
+                'P_VCCPRIMCORE_0P85',
+                'P_VCCCORE',
+                'P_VCCSA',
+                'P_MCP_TOTAL',
+                'P_PCH_TOTAL',
+                'P_MCP_PCH_TOTAL',]
 
         soc_index = ["PC0",
                      "PC2",
@@ -1087,7 +1079,6 @@ class PowerRoll:
                     dir_files[subdir]['socwatch_file'] = file
                 elif "results.json" in file:
                     dir_files[subdir]['results_file'] = file
-
         # Second pass: process directories based on what files they contain
         for subdir, file_info in dir_files.items():
             has_summary = file_info['summary_file'] is not None
@@ -1213,12 +1204,13 @@ class PowerRoll:
         except:
             print("No IOE PCH Data")
 
-        with pd.ExcelWriter("Summary.xlsx") as writer:
+        with pd.ExcelWriter("{}Summary_{}.xlsx".format(self.rootdir, self.time_stamp)) as writer:
+            print(self.rootdir)
             Final_data.to_excel(writer, sheet_name = "All Rails")
 
             try:
                 data2.to_excel(writer, sheet_name = "Focus Rails")
-                print("Data has been written to: .\\Summary.xlsx file.")
+                print("Data has been written to: {}Summary_{}.xlsx file.".format(self.rootdir, self.time_stamp))
 
                 if args.console:
                     print(data2.to_markdown())
@@ -1226,6 +1218,8 @@ class PowerRoll:
             except:
                 print("No data")
 
+        return "{}Summary.xlsx".format(self.rootdir)
+
 if __name__ == '__main__':
-    data = PowerRoll('c:\_hopper_results')
-    data.main()
+    data = PowerRoll("c:\\_hopper_results\\20260203T193430_CMS-Mode-MCS-State\\")
+    file_result = data.main()
