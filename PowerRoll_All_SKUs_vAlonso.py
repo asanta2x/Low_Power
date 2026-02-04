@@ -1205,7 +1205,6 @@ class PowerRoll:
             print("No IOE PCH Data")
 
         with pd.ExcelWriter("{}Summary_{}.xlsx".format(self.rootdir, self.time_stamp)) as writer:
-            print(self.rootdir)
             Final_data.to_excel(writer, sheet_name = "All Rails")
 
             try:
@@ -1218,7 +1217,7 @@ class PowerRoll:
             except:
                 print("No data")
 
-        return "{}Summary.xlsx".format(self.rootdir)
+        return self.rootdir, "Summary_{}.xlsx".format(self.time_stamp)
 
 if __name__ == '__main__':
     data = PowerRoll("c:\\_hopper_results\\20260203T193430_CMS-Mode-MCS-State\\")
