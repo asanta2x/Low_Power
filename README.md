@@ -5,7 +5,7 @@ clone this repo to PythonSV folder
 git clone https://github.com/asanta2x/Low_Power.git
 
 run un Pyscrypter/IDE
-result_hopper_path = 'c:\\_hopper_results\\20260203T193430_CMS-Mode-MCS-State'
+result_hopper_path = 'c:\\_hopper_results\\20260203T193430_CMS-Mode-MCS-State\\'
 from Low_Power.PowerRoll_All_SKUs_vAlonso import PowerRoll
 from Low_Power.C_Low_Power_Processing_files import Process_Data
 power_roll = PowerRoll(result_hopper_path)
