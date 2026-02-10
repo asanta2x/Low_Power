@@ -12,7 +12,7 @@
 import pandas as pd
 from datetime import datetime
 
-class Process_Data:
+class CProcess_Data:
 
     def __init__(self, file_path, input_file):
         self.input_file_name = input_file
@@ -20,7 +20,7 @@ class Process_Data:
         self.time_stamp = ''#datetime.now().strftime('%d_%m_%Y_%H_%M_%S')
         self.reference_value = ["P_MCP_PCH_TOTAL"] # value to take as a reference
         self.power_rails = ["P_MCP_PCH_TOTAL",'P_PCH_TOTAL','P_MCP_TOTAL']
-        self.interested_rails = ['P_VCCGT','P_VCCSA','P_VNNAON','P_VCCIO','P_VCC1P8','P_VDD2','P_V3P3A_PCH',
+        self.interested_rails = ['V_PM_SLP_S0_N','V_PM_SLP_S3_N','V_PM_SLP_S4_N','V_PM_SLP_S5_N','V_CPU_C10_GATE_N','P_VCCGT','P_VCCSA','P_VNNAON','P_VCCIO','P_VCC1P8','P_VDD2','P_V3P3A_PCH',
                             'P_VCCPDSW_3P3','P_V1P8A_PCH','P_V1P25','P_V0P85A','P_VCCCORE','P_MCP_TOTAL','P_PCH_TOTAL','P_MCP_PCH_TOTAL']
 
         self.test_names = ['CMS-Mode-Short-Idle', 'CMS-Mode-MCS-State', 'CMS-Mode-S5-State', 'CMS-Mode-DeepSx-State', 'S3-Mode-Short-Idle','S3-Mode-Long-Idle','S3-State','S3-Mode-S5-State','S3-Mode-DeepSx-State']
@@ -82,28 +82,31 @@ class Process_Data:
     def create_result_files(self):
         self.main_df.set_index('Unnamed: 0', inplace=True)
         df_full_rails = self.main_df[self.column_names]
-        df_full_rails.to_csv(r'{}\\Results_Full_Rails_{}_{}.csv'.format(self.file_path,self.input_file_name, self.time_stamp))
-        print('File created: {}\\Results_Full_Rails_{}_{}.csv'.format(self.file_path, self.input_file_name, self.time_stamp))
+        name=self.input_file_name.strip('.xlsx')
+        df_full_rails.to_csv(r'{}\Results_Full_Rails_{}_{}.csv'.format(self.file_path,name , self.time_stamp))
+        print('File created: {}\Results_Full_Rails_{}_{}.csv'.format(self.file_path, name , self.time_stamp))
 
         df_row_filtered = self.main_df.loc[self.interested_rails]
         df_Copy = df_row_filtered.copy()
         df_result = df_Copy[self.column_names]
-        df_result.to_csv(r'{}\\Results_Interested_Rails_{}_{}.csv'.format(self.file_path,self.input_file_name, self.time_stamp))
-        print('File created: {}\\Results_Interested_Rails_{}_{}.csv'.format(self.file_path,self.input_file_name, self.time_stamp))
+        df_result.to_csv(r'{}\Results_Interested_Rails_{}_{}.csv'.format(self.file_path,name , self.time_stamp))
+        print('File created: {}\Results_Interested_Rails_{}_{}.csv'.format(self.file_path,name , self.time_stamp))
 
         newdf = self.main_df.loc[self.power_rails]
         newdf = newdf[self.column_names]
-        newdf.to_csv(r'{}\\Results_Power_Rails_{}_{}.csv'.format(self.file_path,self.input_file_name, self.time_stamp))
-        print('File created: {}\\Results_Power_Rails_{}_{}.csv'.format(self.file_path,self.input_file_name, self.time_stamp))
+        newdf.to_csv(r'{}\Results_Power_Rails_{}_{}.csv'.format(self.file_path,name , self.time_stamp))
+        print('File created: {}\Results_Power_Rails_{}_{}.csv'.format(self.file_path,name , self.time_stamp))
+        self.return_name = f'{self.file_path}\Results_Interested_Rails_{name}_{self.time_stamp}.csv'
 
     def main(self):
         self.main_df = self.read_csv(self.input_file_name)
         self.process_test_names(self.test_names)
         self.process_dic_test(self.dic_test)
         self.create_result_files()
+        return self.return_name
 
 ############################################################################################################################################
 if __name__ == '__main__':
     #main()
-    data = Process_Data('c:\\_hopper_results\\20260203T193430_CMS-Mode-MCS-State\\', 'Summary_03_02_2026_21_31_12.xlsx')
+    data = CProcess_Data('c:\\_hopper_results\\20260203T193430_CMS-Mode-MCS-State\\', 'Summary_03_02_2026_21_31_12.xlsx')
     data.main()

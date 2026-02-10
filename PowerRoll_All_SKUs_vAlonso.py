@@ -7,7 +7,7 @@ import re
 import warnings
 from datetime import datetime
 
-class PowerRoll:
+class CPowerRoll:
     def __init__(self, rootdir):
         self.rootdir = rootdir
         self.time_stamp = datetime.now().strftime('%d_%m_%Y_%H_%M_%S')
@@ -1220,5 +1220,5 @@ class PowerRoll:
         return self.rootdir, "Summary_{}.xlsx".format(self.time_stamp)
 
 if __name__ == '__main__':
-    data = PowerRoll("c:\\_hopper_results\\20260203T193430_CMS-Mode-MCS-State\\")
+    data = CPowerRoll("c:\\_hopper_results\\20260203T193430_CMS-Mode-MCS-State\\")
     file_result = data.main()
