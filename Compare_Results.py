@@ -31,33 +31,30 @@ class CCompare_Files:
         return self.result_df
     
     def do_math(self):
+        filename1 = self.file_path1.rsplit('Results')[1]
+        filename2 = self.file_path2.rsplit('Results')[1]
+        path = self.file_path1.rsplit('Results')[0]
         self.Read_Input_Files()
         acc = []
         dic = {}
         regs = []
         dfs = []
+        partial = pd.DataFrame()
+        partial['Rails'] = self.interested_rails
         for test in self.test_names:
-            #print(test)
-        #######for i, test in enumerate(self.test_names, start=1):
-        #    print(test)
-            #resta = pd.DataFrame([self.df1[test], self.df2[test], (self.df1[test]-self.df2[test]).abs().round(3)])
             cola = self.df1[test].reset_index(drop=True).abs().round(3)
             colb = self.df2[test].reset_index(drop=True).abs().round(3)
             delta = cola.sub(colb).abs().round(3)
-            partial = pd.DataFrame({'Test:': test,
-                                    'Rail': self.interested_rails,
-                                    f'{self.file_path1}': cola,
-                                    f'{self.file_path2}': colb,
-                                    'Delta': delta,
-                                    'Wrong %': round(100*(cola-colb)/cola,1).abs()})
-            regs.append(partial)
-           
-        new_df = pd.concat(regs, ignore_index = True)
-        new_df.to_csv(f'Comparison_{self.time_stamp}.csv')
-        print(f'File Created: Comparison_{self.time_stamp}.csv')
+
+            partial[test+'-'+filename1] = cola
+            partial[test+'-'+filename2] = colb
+            partial[test+'-Delta'] = delta
+            
+        partial.to_excel(f'{path}{filename1}_vs{filename2}{self.time_stamp}.xlsx', index=False)
+        print(f'File Created: {path}{filename1}_vs_{filename2}{self.time_stamp}.xlsx')
 
 if __name__ == '__main__':
     print('Testing Comparison script')
-    compare = CCompare_Files("C:\Borrar\WW04_Rerun_PCH_B0\Results_Interested_Rails_Summary_52C_PCH_B0_27_01_2026_11_01_58.csv",
-                             "C:\Borrar\WW06_Rerun_PCH_B0\Results_Interested_Rails_Summary_06_02_2026_14_49_20_.csv")
+    compare = CCompare_Files("C:\Borrar\WW06_28C\Results_Interested_Rails_Summary_26_01_2026_09_30_20_WW04_28C.csv",
+                             "C:\Borrar\WW06_28C\Results_Interested_Rails_Summary_10_02_2026_09_49_19_.csv")
     compare.do_math()
