@@ -21,37 +21,31 @@ class CCompare_Files:
     def Read_Input_Files(self):
         self.df1 = self.read_csv(self.file_path1)
         self.df2 = self.read_csv(self.file_path2)
-    
-    def main(self):
-        self.Read_Input_Files()
-        self.result_df = (self.df1 - self.df2).abs().round(3)
-        self.result_df.insert(0,'Rail Names', self.interested_rails)
-        self.result_df.to_csv('DF_Result.csv', index=False)
-
-        return self.result_df
-    
+     
     def do_math(self):
-        filename1 = self.file_path1.rsplit('Results')[1]
-        filename2 = self.file_path2.rsplit('Results')[1]
+        filename1 = self.file_path1.rsplit('Results')[1].rsplit('_Interested_Rails_Summary_')[-1]
+        filename2 = self.file_path2.rsplit('Results')[1].rsplit('_Interested_Rails_Summary_')[-1]
         path = self.file_path1.rsplit('Results')[0]
+        
         self.Read_Input_Files()
-        acc = []
-        dic = {}
-        regs = []
-        dfs = []
-        partial = pd.DataFrame()
-        partial['Rails'] = self.interested_rails
-        for test in self.test_names:
-            cola = self.df1[test].reset_index(drop=True).abs().round(3)
-            colb = self.df2[test].reset_index(drop=True).abs().round(3)
-            delta = cola.sub(colb).abs().round(3)
 
-            partial[test+'-'+filename1] = cola
-            partial[test+'-'+filename2] = colb
-            partial[test+'-Delta'] = delta
-            
-        partial.to_excel(f'{path}{filename1}_vs{filename2}{self.time_stamp}.xlsx', index=False)
-        print(f'File Created: {path}{filename1}_vs_{filename2}{self.time_stamp}.xlsx')
+        Result_df = pd.DataFrame()
+        Result_df['Rails'] = self.interested_rails
+        for test in self.test_names:
+            col_a = self.df1[test].reset_index(drop=True).abs().round(3)
+            col_b = self.df2[test].reset_index(drop=True).abs().round(3)
+            delta = col_a.sub(col_b).abs().round(3)
+
+            Result_df[test+'-'+filename1] = col_a
+            Result_df[test+'-'+filename2] = col_b
+            Result_df[test+'-Delta'] = delta
+
+        result_file_name = f'{path}_Comparison_{filename1}_vs{filename2}.xlsx'
+
+        Result_df.to_excel(result_file_name, sheet_name = 'Comparison',index=False)
+        print(f'File Created: {result_file_name}')
+        
+        return Result_df
 
 if __name__ == '__main__':
     print('Testing Comparison script')

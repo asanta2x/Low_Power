@@ -1217,7 +1217,7 @@ class CPowerRoll:
             except:
                 print("No data")
 
-        return self.rootdir, "Summary_{}.xlsx".format(self.time_stamp)
+        return self.rootdir + "Summary_{}.xlsx".format(self.time_stamp)
 
 if __name__ == '__main__':
     data = CPowerRoll("c:\\_hopper_results\\20260203T193430_CMS-Mode-MCS-State\\")

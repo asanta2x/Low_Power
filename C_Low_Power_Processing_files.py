@@ -14,9 +14,14 @@ from datetime import datetime
 
 class CProcess_Data:
 
-    def __init__(self, file_path, input_file):
-        self.input_file_name = input_file
-        self.file_path = file_path
+    def __init__(self, file_name):
+        #file_path, input_file
+        path_file_names = file_name.rsplit('\\')
+        path = ''
+        i = len(path_file_names)
+        for t in range(i-1): path += path_file_names[t]+'\\'
+        self.input_file_name = file_name.rsplit('\\')[-1]
+        self.file_path = path
         self.time_stamp = ''#datetime.now().strftime('%d_%m_%Y_%H_%M_%S')
         self.reference_value = ["P_MCP_PCH_TOTAL"] # value to take as a reference
         self.power_rails = ["P_MCP_PCH_TOTAL",'P_PCH_TOTAL','P_MCP_TOTAL']
@@ -83,19 +88,19 @@ class CProcess_Data:
         self.main_df.set_index('Unnamed: 0', inplace=True)
         df_full_rails = self.main_df[self.column_names]
         name=self.input_file_name.strip('.xlsx')
-        df_full_rails.to_csv(r'{}\Results_Full_Rails_{}_{}.csv'.format(self.file_path,name , self.time_stamp))
-        print('File created: {}\Results_Full_Rails_{}_{}.csv'.format(self.file_path, name , self.time_stamp))
+        """df_full_rails.to_csv(r'{}\Results_Full_Rails_{}_{}.csv'.format(self.file_path,name , self.time_stamp))
+        print('File created: {}\Results_Full_Rails_{}_{}.csv'.format(self.file_path, name , self.time_stamp))"""
 
         df_row_filtered = self.main_df.loc[self.interested_rails]
         df_Copy = df_row_filtered.copy()
-        df_result = df_Copy[self.column_names]
-        df_result.to_csv(r'{}\Results_Interested_Rails_{}_{}.csv'.format(self.file_path,name , self.time_stamp))
+        self.df_result = df_Copy[self.column_names]
+        self.df_result.to_csv(r'{}\Results_Interested_Rails_{}_{}.csv'.format(self.file_path,name , self.time_stamp))
         print('File created: {}\Results_Interested_Rails_{}_{}.csv'.format(self.file_path,name , self.time_stamp))
 
-        newdf = self.main_df.loc[self.power_rails]
-        newdf = newdf[self.column_names]
-        newdf.to_csv(r'{}\Results_Power_Rails_{}_{}.csv'.format(self.file_path,name , self.time_stamp))
-        print('File created: {}\Results_Power_Rails_{}_{}.csv'.format(self.file_path,name , self.time_stamp))
+        """self.newdf = self.main_df.loc[self.power_rails]
+        self.newdf = self.newdf[self.column_names]
+        self.newdf.to_csv(r'{}\Results_Power_Rails_{}_{}.csv'.format(self.file_path,name , self.time_stamp))
+        print('File created: {}\Results_Power_Rails_{}_{}.csv'.format(self.file_path,name , self.time_stamp))"""
         self.return_name = f'{self.file_path}\Results_Interested_Rails_{name}_{self.time_stamp}.csv'
 
     def main(self):
@@ -108,5 +113,5 @@ class CProcess_Data:
 ############################################################################################################################################
 if __name__ == '__main__':
     #main()
-    data = CProcess_Data('c:\\_hopper_results\\20260203T193430_CMS-Mode-MCS-State\\', 'Summary_03_02_2026_21_31_12.xlsx')
+    data = CProcess_Data("C:\Borrar\WW06_Rerun_PCH_B0\Summary_10_02_2026_22_21_43.xlsx")
     data.main()
